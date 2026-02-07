@@ -1,0 +1,43 @@
+
+> liquid-news-server@1.0.0 dev
+> ts-node-dev --respawn --transpile-only src/index.ts
+
+[INFO] 21:21:16 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.9.3)
+✅ Socket handlers initialized
+(node:25229) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[32minfo[39m: MongoDB connection established {"service":"liquid-news-server","timestamp":"2026-02-07T15:51:17.689Z"}
+[32minfo[39m: Connected to MongoDB: mongodb://localhost:27017/liquid-news {"service":"liquid-news-server","timestamp":"2026-02-07T15:51:17.693Z"}
+
+🚀 AI Newsroom Server Started!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌐 Server:    http://localhost:5050
+📊 Health:    http://localhost:5050/api/health
+🔌 Socket:    ws://localhost:5050
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Environment: development
+Database:    connected
+      
+info: [object Object] {"timestamp":"2026-02-07T15:52:35.769Z"}
+[INFO] 21:23:32 Restarting: /Users/priya/Desktop/liquid-news-system/server/src/index.ts has been modified
+[33mwarn[39m: MongoDB connection lost {"service":"liquid-news-server","timestamp":"2026-02-07T15:53:32.676Z"}
+[32minfo[39m: MongoDB connection closed through app termination {"service":"liquid-news-server","timestamp":"2026-02-07T15:53:32.676Z"}
+✅ Socket handlers initialized
+(node:25880) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[32minfo[39m: MongoDB connection established {"service":"liquid-news-server","timestamp":"2026-02-07T15:53:33.712Z"}
+[32minfo[39m: Connected to MongoDB: mongodb://localhost:27017/liquid-news {"service":"liquid-news-server","timestamp":"2026-02-07T15:53:33.715Z"}
+
+🚀 AI Newsroom Server Started!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌐 Server:    http://localhost:5050
+📊 Health:    http://localhost:5050/api/health
+🔌 Socket:    ws://localhost:5050
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Environment: development
+Database:    connected
+Refreshed Key: Present (sk-pr...)
+Model:       gpt-4o-mini
+      
+[33mwarn[39m: MongoDB connection lost {"service":"liquid-news-server","timestamp":"2026-02-07T15:53:40.495Z"}
+[32minfo[39m: MongoDB connection closed through app termination {"service":"liquid-news-server","timestamp":"2026-02-07T15:53:40.497Z"}
