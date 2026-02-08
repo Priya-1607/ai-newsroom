@@ -39,11 +39,7 @@ if (process.env.CLIENT_URL) {
 }
 const io = new SocketIOServer(httpServer, {
   cors: {
-    origin: [
-      process.env.CLIENT_URL || 'http://localhost:5173',
-      'http://localhost:5173',
-      'http://localhost:3000',
-    ],
+    origin: allowedOrigins,
     methods: ['GET', 'POST'],
     credentials: true,
   },
