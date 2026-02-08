@@ -68,23 +68,23 @@ export const initializeSocketHandlers = (io: SocketIOServer) => {
   });
 
   // Helper functions to emit events
-  io.emitProcessStarted = (userId: string, data: { jobId: string; articleId: string; title: string }) => {
+  (io as any).emitProcessStarted = (userId: string, data: { jobId: string; articleId: string; title: string }) => {
     io.to(userId).emit('process:started', data);
   };
 
-  io.emitProcessProgress = (userId: string, progress: ProcessEvent) => {
+  (io as any).emitProcessProgress = (userId: string, progress: ProcessEvent) => {
     io.to(userId).emit('process:update', progress);
   };
 
-  io.emitProcessCompleted = (userId: string, data: { jobId: string; articleId: string; results: any }) => {
+  (io as any).emitProcessCompleted = (userId: string, data: { jobId: string; articleId: string; results: any }) => {
     io.to(userId).emit('process:completed', data);
   };
 
-  io.emitProcessFailed = (userId: string, data: { jobId: string; error: string }) => {
+  (io as any).emitProcessFailed = (userId: string, data: { jobId: string; error: string }) => {
     io.to(userId).emit('process:failed', data);
   };
 
-  io.emitAgentStatus = (userId: string, data: { agent: string; status: string }) => {
+  (io as any).emitAgentStatus = (userId: string, data: { agent: string; status: string }) => {
     io.to(userId).emit('agent:status', data);
   };
 

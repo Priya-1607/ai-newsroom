@@ -33,3 +33,4 @@ server/server_fix_debug_*.log
 # Brain
 .gemini/
 brain/
+.vercel

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { Secret } from 'jsonwebtoken';
 import { body } from 'express-validator';
 import User from '../models/User';
 import { asyncHandler, createError } from '../middleware/errorHandler';
@@ -11,14 +11,14 @@ const router = Router();
 const generateTokens = (userId: string) => {
   const accessToken = jwt.sign(
     { id: userId },
-    process.env.JWT_SECRET || 'default-secret',
-    { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+    (process.env.JWT_SECRET || 'default-secret') as Secret,
+    { expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as any }
   );
 
   const refreshToken = jwt.sign(
     { id: userId, type: 'refresh' },
-    process.env.JWT_REFRESH_SECRET || 'refresh-secret',
-    { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d' }
+    (process.env.JWT_REFRESH_SECRET || 'refresh-secret') as Secret,
+    { expiresIn: (process.env.JWT_REFRESH_EXPIRES_IN || '30d') as any }
   );
 
   return { accessToken, refreshToken };
@@ -36,7 +36,7 @@ router.post(
       .withMessage('Password must be at least 8 characters'),
     body('name').notEmpty().withMessage('Name is required'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { email, password, name, company } = req.body;
 
     // Check if user exists
@@ -81,7 +81,7 @@ router.post(
     body('email').isEmail().withMessage('Please provide a valid email'),
     body('password').notEmpty().withMessage('Password is required'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { email, password } = req.body;
 
     // Find user with password
@@ -121,7 +121,7 @@ router.post(
 // @access  Public
 router.post(
   '/refresh',
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
@@ -131,13 +131,13 @@ router.post(
     try {
       const decoded = jwt.verify(
         refreshToken,
-        process.env.JWT_REFRESH_SECRET || 'refresh-secret'
+        (process.env.JWT_REFRESH_SECRET || 'refresh-secret') as Secret
       ) as { id: string };
 
       const accessToken = jwt.sign(
         { id: decoded.id },
-        process.env.JWT_SECRET || 'default-secret',
-        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+        (process.env.JWT_SECRET || 'default-secret') as Secret,
+        { expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as any }
       );
 
       res.json({
@@ -156,7 +156,7 @@ router.post(
 router.get(
   '/profile',
   authenticate,
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const user = await User.findById(req.user?.id);
     if (!user) {
       throw createError('User not found', 404);
@@ -186,7 +186,7 @@ router.get(
 router.put(
   '/profile',
   authenticate,
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { name, company, preferences, avatar } = req.body;
 
     const user = await User.findByIdAndUpdate(
@@ -223,7 +223,7 @@ router.post(
       .isLength({ min: 8 })
       .withMessage('New password must be at least 8 characters'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { currentPassword, newPassword } = req.body;
 
     const user = await User.findById(req.user?.id).select('+password');

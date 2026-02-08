@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 
 const fileFilter = (
   req: Express.Request,
-  file: Express.MulterFile,
+  file: any,
   cb: multer.FileFilterCallback
 ) => {
   const allowedTypes = [
@@ -67,10 +67,10 @@ router.post(
       .isURL()
       .withMessage('Invalid source URL'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { title, content: textContent, sourceUrl } = req.body;
     let sourceType: 'text' | 'pdf' | 'docx' | 'url' = 'text';
-    let finalContent = textContent || '';
+    let finalContent: string = textContent || '';
 
     // Handle file upload
     if (req.file) {
@@ -136,10 +136,10 @@ router.get(
     query('status').optional().isIn(['pending', 'processing', 'completed', 'failed']),
     query('search').optional().isString(),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
-    const skip = (page - 1) * limit;
+    const skip: number = (page - 1) * limit;
     const status = req.query.status as string;
     const search = req.query.search as string;
 
@@ -187,7 +187,7 @@ router.get(
   '/:id',
   authenticate,
   [param('id').isMongoId().withMessage('Invalid article ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const article = await Article.findOne({
       _id: req.params.id,
       uploadedBy: req.user?.id,
@@ -223,7 +223,7 @@ router.put(
     param('id').isMongoId().withMessage('Invalid article ID'),
     body('title').optional().notEmpty().withMessage('Title cannot be empty'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { title, content, brandVoice } = req.body;
 
     const article = await Article.findOneAndUpdate(
@@ -255,7 +255,7 @@ router.delete(
   authenticate,
   authorize('admin'),
   [param('id').isMongoId().withMessage('Invalid article ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const article = await Article.findOneAndDelete({
       _id: req.params.id,
       uploadedBy: req.user?.id,
@@ -282,7 +282,7 @@ router.post(
   '/:id/process',
   authenticate,
   [param('id').isMongoId().withMessage('Invalid article ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const article = await Article.findOne({
       _id: req.params.id,
       uploadedBy: req.user?.id,
@@ -335,7 +335,7 @@ router.post(
     body('info').notEmpty().withMessage('Information/Notes are required'),
     body('brandVoiceId').optional().isMongoId().withMessage('Invalid Brand Voice ID'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { title, info, brandVoiceId } = req.body;
 
     // Get brand voice if specified

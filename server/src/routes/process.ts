@@ -19,7 +19,7 @@ router.post(
     body('platforms')
       .optional()
       .isArray()
-      .custom((value) => {
+      .custom((value: any) => {
         const validPlatforms = [
           'linkedin',
           'tiktok',
@@ -32,7 +32,7 @@ router.post(
         return value.every((platform: string) => validPlatforms.includes(platform));
       }),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { articleId, platforms, brandVoiceId } = req.body;
 
     const article = await Article.findById(articleId);
@@ -86,7 +86,7 @@ router.get(
   '/status/:jobId',
   authenticate,
   [param('jobId').isUUID().withMessage('Invalid job ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { jobId } = req.params;
 
     // In production, get status from job queue/cache
@@ -115,7 +115,7 @@ router.get(
   '/results/:articleId',
   authenticate,
   [param('articleId').isMongoId().withMessage('Invalid article ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { articleId } = req.params;
     const platform = req.query.platform as string;
 
@@ -162,7 +162,7 @@ router.post(
       .withMessage('Invalid platform'),
     body('brandVoiceId').optional().isMongoId(),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { content, platform, brandVoiceId } = req.body;
 
     // In production, this would call the reformatter agent
@@ -191,7 +191,7 @@ router.post(
     body('originalContent').notEmpty().withMessage('Original content is required'),
     body('reformattedContent').notEmpty().withMessage('Reformatted content is required'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { originalContent, reformattedContent } = req.body;
 
     // In production, this would call the fact-checker agent
@@ -221,7 +221,7 @@ router.post(
     body('content').notEmpty().withMessage('Content is required'),
     body('targetKeywords').optional().isArray(),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { content, targetKeywords, targetAudience } = req.body;
 
     // In production, this would call the SEO optimizer agent
@@ -251,7 +251,7 @@ router.post(
   '/cancel/:jobId',
   authenticate,
   [param('jobId').isUUID().withMessage('Invalid job ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { jobId } = req.params;
 
     // In production, cancel the job in the queue

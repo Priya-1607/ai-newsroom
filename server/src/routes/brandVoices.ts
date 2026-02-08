@@ -94,7 +94,7 @@ Help readers understand how technology affects their lives.`,
 router.get(
   '/',
   authenticate,
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const voices = await BrandVoice.find({ createdBy: req.user?.id }).sort({
       isDefault: -1,
       name: 1,
@@ -120,7 +120,7 @@ router.post(
     body('tone').optional().isObject(),
     body('style').optional().isObject(),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const {
       name,
       description,
@@ -163,7 +163,7 @@ router.post(
   authenticate,
   authorize('admin', 'editor'),
   [body('template').isIn(['professional', 'casual', 'tech']).withMessage('Invalid template')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const { template, name, description } = req.body;
     const templateData = defaultVoices[template as keyof typeof defaultVoices];
 
@@ -200,7 +200,7 @@ router.get(
   '/:id',
   authenticate,
   [param('id').isMongoId().withMessage('Invalid brand voice ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const voice = await BrandVoice.findOne({
       _id: req.params.id,
       createdBy: req.user?.id,
@@ -229,7 +229,7 @@ router.put(
     body('name').optional().notEmpty(),
     body('systemPrompt').optional().notEmpty(),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const {
       name,
       description,
@@ -279,7 +279,7 @@ router.delete(
   authenticate,
   authorize('admin'),
   [param('id').isMongoId().withMessage('Invalid brand voice ID')],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const voice = await BrandVoice.findOneAndDelete({
       _id: req.params.id,
       createdBy: req.user?.id,
@@ -307,7 +307,7 @@ router.post(
     param('id').isMongoId().withMessage('Invalid brand voice ID'),
     body('content').notEmpty().withMessage('Test content is required'),
   ],
-  asyncHandler(async (req: AuthRequest, res, next) => {
+  asyncHandler(async (req: AuthRequest, res: import('express').Response, next: import('express').NextFunction) => {
     const voice = await BrandVoice.findOne({
       _id: req.params.id,
       createdBy: req.user?.id,
