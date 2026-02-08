@@ -18,7 +18,7 @@ export interface DatabaseConfig {
  */
 export const getDatabaseConfig = (): DatabaseConfig => {
   return {
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/liquid-news',
+    uri: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/liquid-news',
     dbName: process.env.MONGODB_DB_NAME,
     maxPoolSize: parseInt(process.env.MONGODB_MAX_POOL_SIZE || '10', 10),
     minPoolSize: parseInt(process.env.MONGODB_MIN_POOL_SIZE || '2', 10),
